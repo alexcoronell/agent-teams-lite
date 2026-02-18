@@ -2,7 +2,7 @@
 set -euo pipefail
 
 # ============================================================================
-# SDD Agent Team — Install Script
+# Agent Teams Lite — Install Script
 # Copies skills to your AI coding assistant's skill directory
 # ============================================================================
 
@@ -22,7 +22,7 @@ NC='\033[0m'
 print_header() {
     echo ""
     echo -e "${CYAN}${BOLD}╔══════════════════════════════════════════╗${NC}"
-    echo -e "${CYAN}${BOLD}║       SDD Agent Team — Installer         ║${NC}"
+    echo -e "${CYAN}${BOLD}║      Agent Teams Lite — Installer        ║${NC}"
     echo -e "${CYAN}${BOLD}║   Spec-Driven Development for AI Agents  ║${NC}"
     echo -e "${CYAN}${BOLD}╚══════════════════════════════════════════╝${NC}"
     echo ""

@@ -1,5 +1,5 @@
 <p align="center">
-  <h1 align="center">SDD Agent Team</h1>
+  <h1 align="center">Agent Teams Lite</h1>
   <p align="center">
     <strong>Agent-Team Orchestration with AI Sub-Agents</strong>
     <br />
@@ -30,7 +30,7 @@ AI coding assistants are powerful, but they struggle with complex features:
 
 ## The Solution
 
-**SDD Agent Team** is an agent-team orchestration pattern where a lightweight coordinator delegates all real work to specialized sub-agents. Each sub-agent starts with fresh context, executes one focused task, and returns a structured result.
+**Agent Teams Lite** is an agent-team orchestration pattern where a lightweight coordinator delegates all real work to specialized sub-agents. Each sub-agent starts with fresh context, executes one focused task, and returns a structured result.
 
 ```
 YOU: "I want to add CSV export to the app"
@@ -90,6 +90,77 @@ artifact_store:
 ---
 
 ## How It Works
+
+### Where Agent Teams Lite Fits
+
+Agent Teams Lite sits between basic sub-agent patterns and full Agent Teams runtimes:
+
+```mermaid
+graph TB
+    subgraph "Level 1 — Basic Subagents"
+        L1_Lead["Lead Agent"]
+        L1_Sub1["Sub-agent 1"]
+        L1_Sub2["Sub-agent 2"]
+        L1_Lead -->|"fire & forget"| L1_Sub1
+        L1_Lead -->|"fire & forget"| L1_Sub2
+    end
+
+    subgraph "Level 2 — Agent Teams Lite ⭐"
+        L2_Orch["Orchestrator<br/>(delegate-only)"]
+        L2_Explore["Explorer"]
+        L2_Propose["Proposer"]
+        L2_Spec["Spec Writer"]
+        L2_Design["Designer"]
+        L2_Tasks["Task Planner"]
+        L2_Apply["Implementer"]
+        L2_Verify["Verifier"]
+        L2_Archive["Archiver"]
+        
+        L2_Orch -->|"DAG phase"| L2_Explore
+        L2_Orch -->|"DAG phase"| L2_Propose
+        L2_Orch -->|"parallel"| L2_Spec
+        L2_Orch -->|"parallel"| L2_Design
+        L2_Orch -->|"DAG phase"| L2_Tasks
+        L2_Orch -->|"batched"| L2_Apply
+        L2_Orch -->|"DAG phase"| L2_Verify
+        L2_Orch -->|"DAG phase"| L2_Archive
+        
+        L2_Store[("Pluggable Store<br/>engram | openspec | none")]
+        L2_Spec -.->|"persist"| L2_Store
+        L2_Design -.->|"persist"| L2_Store
+        L2_Apply -.->|"persist"| L2_Store
+    end
+
+    subgraph "Level 3 — Full Agent Teams"
+        L3_Orch["Orchestrator"]
+        L3_A1["Agent A"]
+        L3_A2["Agent B"]
+        L3_A3["Agent C"]
+        L3_Queue[("Shared Task Queue<br/>claim / heartbeat")]
+        
+        L3_Orch -->|"manage"| L3_Queue
+        L3_A1 <-->|"claim & report"| L3_Queue
+        L3_A2 <-->|"claim & report"| L3_Queue
+        L3_A3 <-->|"claim & report"| L3_Queue
+        L3_A1 <-.->|"peer comms"| L3_A2
+        L3_A2 <-.->|"peer comms"| L3_A3
+    end
+
+    style L2_Orch fill:#4CAF50,color:#fff,stroke:#333
+    style L2_Store fill:#2196F3,color:#fff,stroke:#333
+    style L3_Queue fill:#FF9800,color:#fff,stroke:#333
+```
+
+| Capability | Basic Subagents | Agent Teams Lite | Full Agent Teams |
+|---|:---:|:---:|:---:|
+| Delegate-only lead | — | ✅ | ✅ |
+| DAG-based phase orchestration | — | ✅ | ✅ |
+| Parallel phases (spec ∥ design) | — | ✅ | ✅ |
+| Structured result envelope | — | ✅ | ✅ |
+| Pluggable artifact store | — | ✅ | ✅ |
+| Shared task queue with claim/heartbeat | — | — | ✅ |
+| Teammate ↔ teammate communication | — | — | ✅ |
+| Dynamic work stealing | — | — | ✅ |
 
 ### Architecture
 
@@ -206,8 +277,8 @@ openspec/
 ### 1. Install the skills
 
 ```bash
-git clone https://github.com/gentleman-programming/sdd-agent-team.git
-cd sdd-agent-team
+git clone https://github.com/gentleman-programming/agent-teams-lite.git
+cd agent-teams-lite
 ./scripts/install.sh
 ```
 
@@ -414,7 +485,7 @@ The skills are pure Markdown. Any AI assistant that can read files can use them.
 
 [OpenSpec](https://openspec.dev) is great. We took heavy inspiration from it. But:
 
-| | OpenSpec | SDD Agent Team |
+| | OpenSpec | Agent Teams Lite |
 |---|---|---|
 | **Dependencies** | Requires `npm install -g @fission-ai/openspec` | Zero. Pure Markdown files. |
 | **Sub-agents** | Runs inline (one context window) | True sub-agent delegation (fresh context per phase) |
@@ -423,7 +494,7 @@ The skills are pure Markdown. Any AI assistant that can read files can use them.
 | **Tool support** | 20+ tools via CLI | Any tool that can read Markdown (infinite) |
 | **Setup** | CLI init + slash commands | Copy files + go |
 
-**The key difference is the sub-agent architecture.** OpenSpec runs everything in a single conversation context. SDD Agent Team uses the Task tool to spawn fresh-context sub-agents, keeping the orchestrator's context window clean.
+**The key difference is the sub-agent architecture.** OpenSpec runs everything in a single conversation context. Agent Teams Lite uses the Task tool to spawn fresh-context sub-agents, keeping the orchestrator's context window clean.
 
 This means:
 - Less context compression = fewer hallucinations
@@ -435,7 +506,7 @@ This means:
 ## Project Structure
 
 ```
-sdd-agent-team/
+agent-teams-lite/
 ├── README.md                          ← You are here
 ├── LICENSE
 ├── skills/                            ← The 9 sub-agent skill files

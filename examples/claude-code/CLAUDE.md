@@ -1,4 +1,4 @@
-# SDD Orchestrator Instructions
+# Agent Teams Lite — Orchestrator Instructions
 
 Add this section to your existing `~/.claude/CLAUDE.md` or project-level `CLAUDE.md`.
 
