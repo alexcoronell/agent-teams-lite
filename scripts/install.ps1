@@ -142,6 +142,19 @@ function Install-Skills {
 
     New-Item -ItemType Directory -Path $TargetDir -Force | Out-Null
 
+    # Copy shared convention files (_shared/)
+    $sharedSrc = Join-Path $SkillsSrc '_shared'
+    $sharedTarget = Join-Path $TargetDir '_shared'
+
+    if (Test-Path $sharedSrc) {
+        New-Item -ItemType Directory -Path $sharedTarget -Force | Out-Null
+        $sharedFiles = Get-ChildItem -Path $sharedSrc -Filter '*.md'
+        foreach ($file in $sharedFiles) {
+            Copy-Item -Path $file.FullName -Destination $sharedTarget -Force
+        }
+        Write-Skill '_shared (convention files)'
+    }
+
     $count = 0
     $skillDirs = Get-ChildItem -Path $SkillsSrc -Directory -Filter 'sdd-*'
 

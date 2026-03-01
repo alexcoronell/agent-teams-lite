@@ -189,6 +189,18 @@ install_skills() {
 
     mkdir -p "$target_dir"
 
+    # Copy shared convention files (_shared/)
+    local shared_src="$SKILLS_SRC/_shared"
+    local shared_target="$target_dir/_shared"
+
+    if [ -d "$shared_src" ]; then
+        mkdir -p "$shared_target" 2>/dev/null || {
+            make_writable "$shared_target"
+        }
+        cp "$shared_src"/*.md "$shared_target/" 2>/dev/null || true
+        print_skill "_shared (convention files)"
+    fi
+
     local count=0
     for skill_dir in "$SKILLS_SRC"/sdd-*/; do
         local skill_name
